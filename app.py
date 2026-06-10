@@ -122,8 +122,8 @@ def main() -> None:
         if not synthetic:
             st.markdown("**Universe & dates** (downloads from yfinance + FRED)")
             tickers = st.multiselect("Tickers", tickers, default=tickers)
-            start = str(st.date_input("Start", value=pd.Timestamp("2014-01-01")).date())
-            end = str(st.date_input("End", value=pd.Timestamp("2024-12-31")).date())
+            start = str(st.date_input("Start", value=pd.Timestamp("2014-01-01")))
+            end = str(st.date_input("End", value=pd.Timestamp("2024-12-31")))
 
         years = st.slider("Years of history to use", 2, 12, 5,
                           help="Trims to the most recent N years to keep runtime reasonable.")
