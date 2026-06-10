@@ -1,0 +1,4 @@
+# Optional: Deep RL agent (heavy). Install with:  pip install -r requirements-drl.txt
+gymnasium>=0.29
+stable-baselines3>=2.0
+torch>=2.0

@@ -88,6 +88,28 @@ the implied buy/sell trades versus your current holdings. The same view is the
 - **Bigger universe** — 13 multi-asset ETFs spanning equity, credit, rates, TIPS,
   gold, commodities and REITs.
 
+## Deep reinforcement-learning agent (experimental)
+
+The optional DRL module trains an agent (PPO/A2C via Stable-Baselines3) to choose
+allocations directly. It acts at each rebalance, observes a leak-safe market
+summary, and is rewarded with the **differential Sharpe ratio** of its realized,
+cost-adjusted return — learning a risk-adjusted policy without any Markowitz math.
+The trained policy is evaluated out-of-sample through the *same* walk-forward
+backtester as every other strategy.
+
+```bash
+pip install -r requirements-drl.txt          # heavy: adds PyTorch + Stable-Baselines3
+python scripts/train_drl.py --synthetic --timesteps 20000
+```
+
+Without the extra installed the script falls back to a random-policy agent so you
+can still see the evaluation plumbing.
+
+> **Experimental and honest about it.** DRL results are noisy, seed-dependent, and
+> frequently fail to beat the simple baselines — reproducing a well-known finding
+> in the literature. It is included to demonstrate the technique and the
+> end-to-end comparison, not as a recommended allocator. Not financial advice.
+
 ## License
 
 MIT — see `LICENSE`.
