@@ -56,3 +56,11 @@ def test_weights_logged_at_each_rebalance(synthetic_data):
     # Each logged weight row sums to ~1.
     sums = res.weights.sum(axis=1)
     assert np.allclose(sums.to_numpy(), 1.0, atol=1e-6)
+
+
+def test_normalize_freq_valid_for_installed_pandas():
+    from pandas.tseries.frequencies import to_offset
+    from mlportfolio.backtest.engine import _normalize_freq
+    # Whatever the installed pandas accepts, the normalized alias must parse.
+    for legacy in ["M", "Q", "Y"]:
+        to_offset(_normalize_freq(legacy))

@@ -22,6 +22,27 @@ import pandas as pd
 from ..data.loaders import MarketData
 from .metrics import performance_summary
 
+
+def _normalize_freq(freq: str) -> str:
+    """Return a resample alias valid for the installed pandas version.
+
+    pandas >= 2.2 renamed period-end offset aliases (``M`` -> ``ME``,
+    ``Q`` -> ``QE``, ``Y`` -> ``YE`` ...) and pandas 3.0 removed the old forms
+    entirely. We accept the legacy alias in config for readability and remap it
+    on the fly only when the running pandas rejects it, so a single config works
+    across versions.
+    """
+    from pandas.tseries.frequencies import to_offset
+
+    try:
+        to_offset(freq)
+        return freq
+    except Exception:
+        return {
+            "M": "ME", "Q": "QE", "Y": "YE", "A": "YE",
+            "BM": "BME", "BQ": "BQE", "BA": "BYE",
+        }.get(freq, freq)
+
 # A strategy maps (data-up-to-asof, asof_date) -> target weight Series.
 StrategyFn = Callable[[MarketData, pd.Timestamp], pd.Series]
 
@@ -57,7 +78,7 @@ class WalkForwardBacktester:
         start = index[min(self.warmup_days, len(index) - 1)]
         usable = index[index >= start]
         # Last trading day of each period that actually exists in the index.
-        marks = pd.Series(usable, index=usable).resample(self.rebalance).last()
+        marks = pd.Series(usable, index=usable).resample(_normalize_freq(self.rebalance)).last()
         dates = [d for d in marks.values if pd.notna(d)]
         return [pd.Timestamp(d) for d in dates]
 
