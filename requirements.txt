@@ -7,4 +7,5 @@ yfinance>=0.2.40
 pandas-datareader>=0.10
 matplotlib>=3.7
 PyYAML>=6.0
+streamlit>=1.30
 pytest>=7.4
