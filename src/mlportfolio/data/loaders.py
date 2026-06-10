@@ -117,19 +117,24 @@ def _download_prices(tickers: Sequence[str], start: str, end: str) -> pd.DataFra
 
 
 def _download_macro(series: Sequence[str], start: str, end: str) -> pd.DataFrame:
-    from pandas_datareader import data as pdr  # lazy import
-
+    """Fetch FRED series directly from FRED's public CSV endpoint."""
     frames = []
     for code in series:
+        url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={code}"
         try:
-            s = pdr.DataReader(code, "fred", start, end)
-            frames.append(s)
-        except Exception:  # pragma: no cover - a single missing series is non-fatal
+            df = pd.read_csv(url, na_values=".")
+            date_col = df.columns[0]
+            df[date_col] = pd.to_datetime(df[date_col])
+            df = df.set_index(date_col)
+            df.columns = [code]
+            frames.append(df)
+        except Exception:  # pragma: no cover
             continue
     if not frames:
         return pd.DataFrame()
-    macro = pd.concat(frames, axis=1)
-    return macro.sort_index()
+    macro = pd.concat(frames, axis=1).sort_index()
+    lo, hi = pd.Timestamp(start), pd.Timestamp(end)
+    return macro.loc[(macro.index >= lo) & (macro.index <= hi)]
 
 
 def load_market_data(
