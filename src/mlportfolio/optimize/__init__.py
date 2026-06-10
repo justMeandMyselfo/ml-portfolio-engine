@@ -8,6 +8,7 @@ from .markowitz import (
 )
 from .black_litterman import black_litterman_weights, black_litterman_returns
 from .covariance import sample_covariance, ledoit_wolf_covariance
+from .risk import portfolio_volatility, volatility_target, apply_turnover_control
 
 __all__ = [
     "mean_variance_weights",
@@ -18,4 +19,7 @@ __all__ = [
     "black_litterman_returns",
     "sample_covariance",
     "ledoit_wolf_covariance",
+    "portfolio_volatility",
+    "volatility_target",
+    "apply_turnover_control",
 ]
