@@ -11,7 +11,7 @@ optimizer and progressively replaces its weakest assumptions with data-driven co
 | Backtests routinely **leak the future** | A strict **walk-forward** engine with transaction costs, no look-ahead, and proper risk-adjusted metrics against real baselines. |
 
 > The goal is not to claim a magic money machine. It is to demonstrate, rigorously and
-> reproducibly, *where* machine learning helps a classical allocator and *where it does not* —
+> reproducibly, *where* machine learning helps a classical allocator and *where it does not*
 >
 
 ---
