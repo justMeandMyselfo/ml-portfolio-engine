@@ -12,7 +12,7 @@ optimizer and progressively replaces its weakest assumptions with data-driven co
 
 > The goal is not to claim a magic money machine. It is to demonstrate, rigorously and
 > reproducibly, *where* machine learning helps a classical allocator and *where it does not* —
-> the exact distinction a quant interviewer cares about.
+>
 
 ---
 
